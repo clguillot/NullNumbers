@@ -34,6 +34,7 @@ struct NullNumber <: Number end
 
 @inline Base.sqrt(::NullNumber) = NullNumber()
 @inline Base.cbrt(::NullNumber) = NullNumber()
+@inline Base.conj(::NullNumber) = NullNumber()
 @inline Base.abs(::NullNumber) = NullNumber()
 @inline Base.abs2(::NullNumber) = NullNumber()
 @inline Base.exp(::NullNumber) = true
