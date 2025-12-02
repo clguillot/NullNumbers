@@ -33,6 +33,7 @@ struct NullNumber <: Number end
 @inline Base.:^(::T, ::NullNumber) where T<:Number = one(T)
 
 @inline Base.sqrt(::NullNumber) = NullNumber()
+@inline Base.cbrt(::NullNumber) = NullNumber()
 @inline Base.abs(::NullNumber) = NullNumber()
 @inline Base.abs2(::NullNumber) = NullNumber()
 @inline Base.exp(::NullNumber) = true
