@@ -32,6 +32,14 @@ struct NullNumber <: Number end
 @inline Base.:^(::NullNumber, ::Integer) = NullNumber()
 @inline Base.:^(::T, ::NullNumber) where T<:Number = one(T)
 
+# muladd
+@inline Base.muladd(::NullNumber, ::NullNumber, ::NullNumber) = NullNumber()
+@inline Base.muladd(::NullNumber, ::NullNumber, x::Number) = x
+@inline Base.muladd(::NullNumber, ::Number, x::Number) = x
+@inline Base.muladd(::Number, ::NullNumber, x::Number) = x
+
+# other functions
+@inline Base.inv(::NullNumber) = throw(DivideError())
 @inline Base.sqrt(::NullNumber) = NullNumber()
 @inline Base.cbrt(::NullNumber) = NullNumber()
 @inline Base.conj(::NullNumber) = NullNumber()
