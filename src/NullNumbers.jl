@@ -57,6 +57,7 @@ struct NullNumber <: Number end
 @inline Base.zero(::Type{NullNumber}) = NullNumber()
 @inline Base.zero(::NullNumber) = NullNumber()
 Base.convert(::Type{T}, ::NullNumber) where T<:Number = zero(T)
+Base.promote_rule(::Type{NullNumber}, ::Type{T}) where T<:Number = T
 
 end # module NullNumber
 
