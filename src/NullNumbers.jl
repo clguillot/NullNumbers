@@ -42,7 +42,6 @@ struct NullNumber <: Number end
 @inline Base.inv(::NullNumber) = throw(DivideError())
 @inline Base.sqrt(::NullNumber) = NullNumber()
 @inline Base.cbrt(::NullNumber) = NullNumber()
-@inline Base.conj(::NullNumber) = NullNumber()
 @inline Base.abs(::NullNumber) = NullNumber()
 @inline Base.abs2(::NullNumber) = NullNumber()
 @inline Base.exp(::NullNumber) = true
@@ -51,6 +50,9 @@ struct NullNumber <: Number end
 
 @inline Base.hypot(::NullNumber, ::NullNumber) = NullNumber()
 
+@inline Base.real(::NullNumber) = NullNumber()
+@inline Base.imag(::NullNumber) = NullNumber()
+@inline Base.conj(::NullNumber) = NullNumber()
 @inline imagz(::Union{Real, NullNumber}) = NullNumber()
 @inline imagz(z::Complex) = imag(z)
 
