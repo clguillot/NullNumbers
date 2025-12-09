@@ -6,7 +6,7 @@
 
 *NullNumbers* is a lightweight Julia package providing a numeric type that can explicitly represent a “null” value while still participating in arithmetic.
 Null values act as a zero-like element: they are neutral for addition but absorb any numeric operand in multiplication.
-
+ 
 ## Usage
 
 ```
