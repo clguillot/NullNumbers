@@ -54,6 +54,14 @@ struct NullNumber <: Number end
 
 @inline Base.hypot(::NullNumber, ::NullNumber) = NullNumber()
 
+# Comparisons
+@inline Base.iszero(::NullNumber) = true
+@inline Base.:(==)(::NullNumber, ::NullNumber) = true
+@inline Base.:(<=)(::NullNumber, ::NullNumber) = true
+@inline Base.:(>=)(::NullNumber, ::NullNumber) = true
+@inline Base.:<(::NullNumber, ::NullNumber) = false
+@inline Base.:>(::NullNumber, ::NullNumber) = false
+
 @inline Base.real(::NullNumber) = NullNumber()
 @inline Base.imag(::NullNumber) = NullNumber()
 @inline Base.conj(::NullNumber) = NullNumber()

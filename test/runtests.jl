@@ -72,6 +72,14 @@ end
     @test muladd(5, n, 3) == 3
 end
 
+@testset "fma" begin
+    n = NullNumber()
+    @test fma(n, n, n) == NullNumber()
+    @test fma(n, n, 3) == 3
+    @test fma(n, 5, 3) == 3
+    @test fma(5, n, 3) == 3
+end
+
 @testset "Other functions" begin
     n = NullNumber()
 
@@ -98,6 +106,16 @@ end
     @test real(n) == NullNumber()
     @test imag(n) == NullNumber()
     @test conj(n) == NullNumber()
+end
+
+@testset "Comparisons" begin
+    n = NullNumber()
+    @test iszero(n) === true
+    @test n == n
+    @test !(n < n)
+    @test n <= n
+    @test n >= n
+    @test !(n > n)
 end
 
 @testset "imagz" begin
