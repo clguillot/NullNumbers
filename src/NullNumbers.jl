@@ -37,6 +37,10 @@ struct NullNumber <: Number end
 @inline Base.muladd(::NullNumber, ::NullNumber, x::Number) = x
 @inline Base.muladd(::NullNumber, ::Number, x::Number) = x
 @inline Base.muladd(::Number, ::NullNumber, x::Number) = x
+@inline Base.fma(::NullNumber, ::NullNumber, ::NullNumber) = NullNumber()
+@inline Base.fma(::NullNumber, ::NullNumber, x::Number) = x
+@inline Base.fma(::NullNumber, ::Number, x::Number) = x
+@inline Base.fma(::Number, ::NullNumber, x::Number) = x
 
 # other functions
 @inline Base.inv(::NullNumber) = throw(DivideError())
