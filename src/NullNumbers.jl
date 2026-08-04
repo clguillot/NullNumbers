@@ -55,12 +55,25 @@ struct NullNumber <: Number end
 @inline Base.hypot(::NullNumber, ::NullNumber) = NullNumber()
 
 # Comparisons
+# Ordering is only defined against Real (not Number/Complex in general), matching
+# Base's own convention that `<`/`isless` aren't defined for complex numbers.
 @inline Base.iszero(::NullNumber) = true
 @inline Base.:(==)(::NullNumber, ::NullNumber) = true
-@inline Base.:(<=)(::NullNumber, ::NullNumber) = true
-@inline Base.:(>=)(::NullNumber, ::NullNumber) = true
+@inline Base.isless(::NullNumber, ::NullNumber) = false
+@inline Base.isless(::NullNumber, x::Real) = isless(0, x)
+@inline Base.isless(x::Real, ::NullNumber) = isless(x, 0)
 @inline Base.:<(::NullNumber, ::NullNumber) = false
+@inline Base.:<(::NullNumber, x::Real) = 0 < x
+@inline Base.:<(x::Real, ::NullNumber) = x < 0
+@inline Base.:<=(::NullNumber, ::NullNumber) = true
+@inline Base.:<=(::NullNumber, x::Real) = 0 <= x
+@inline Base.:<=(x::Real, ::NullNumber) = x <= 0
 @inline Base.:>(::NullNumber, ::NullNumber) = false
+@inline Base.:>(::NullNumber, x::Real) = 0 > x
+@inline Base.:>(x::Real, ::NullNumber) = x > 0
+@inline Base.:>=(::NullNumber, ::NullNumber) = true
+@inline Base.:>=(::NullNumber, x::Real) = 0 >= x
+@inline Base.:>=(x::Real, ::NullNumber) = x >= 0
 
 @inline Base.real(::NullNumber) = NullNumber()
 @inline Base.imag(::NullNumber) = NullNumber()
