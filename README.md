@@ -55,7 +55,7 @@ follow IEEE float semantics in a few places:
 
 - `NullNumber() * NaN` and `NullNumber() * Inf` both evaluate to
   `NullNumber()`, not `NaN`.
-- `NullNumber() / x` returns `NullNumber()`, even when `x = 0, Inf, or NaN`
+- `NullNumber() / x` returns `NullNumber()`, even when `x = 0, or NaN`
 - `x / NullNumber()` throws a `DivideError`, rather than returning `Inf`
   the way `x / 0.0` would.
 
