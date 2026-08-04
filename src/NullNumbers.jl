@@ -27,9 +27,15 @@ struct NullNumber <: Number end
 @inline Base.:\(::Number, ::NullNumber) = NullNumber()
 @inline Base.:\(::NullNumber, ::Number) = throw(DivideError())
 # ^
-@inline Base.:^(::NullNumber, ::NullNumber) = throw(DomainError("NullNumber^NullNumber is undefined"))
-@inline Base.:^(::NullNumber, ::Number) = NullNumber()
-@inline Base.:^(::NullNumber, ::Integer) = NullNumber()
+@inline Base.:^(::NullNumber, ::NullNumber) = throw(DomainError(NullNumber(), "NullNumber^NullNumber is undefined"))
+function _pow_nullnumber(x::Number)
+    real(x) > 0 && return NullNumber()
+    throw(DomainError(x, "NullNumber^x is only defined for real(x) > 0"))
+end
+# A dedicated ::Integer method is required (not just ::Real) to disambiguate against
+# Base's `^(x::Number, p::Integer)`, which would otherwise be equally specific.
+@inline Base.:^(::NullNumber, x::Number) = _pow_nullnumber(x)
+@inline Base.:^(::NullNumber, x::Integer) = _pow_nullnumber(x)
 @inline Base.:^(::T, ::NullNumber) where T<:Number = one(T)
 
 # muladd
