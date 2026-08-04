@@ -36,6 +36,10 @@ end
 # Base's `^(x::Number, p::Integer)`, which would otherwise be equally specific.
 @inline Base.:^(::NullNumber, x::Number) = _pow_nullnumber(x)
 @inline Base.:^(::NullNumber, x::Integer) = _pow_nullnumber(x)
+# Literal integer powers (e.g. `n^2`, `n^-1`) are routed by Base through `literal_pow`,
+# which for negative literals calls `inv(x)` before ever reaching `^`. Overriding it here
+# keeps literal and runtime exponents throwing the same DomainError.
+@inline Base.literal_pow(::typeof(^), ::NullNumber, ::Val{p}) where p = _pow_nullnumber(p)
 @inline Base.:^(::T, ::NullNumber) where T<:Number = one(T)
 
 # muladd
