@@ -3,6 +3,9 @@ uuid = "1f86935a-ad3c-47cd-9a52-71de3d40cd89"
 authors = ["Clement Guillot"]
 version = "0.1.0"
 
+[compat]
+julia = "1.10.10"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
