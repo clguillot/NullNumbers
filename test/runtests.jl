@@ -56,12 +56,36 @@ end
 
     @test_throws DomainError n ^ n
 
+    # positive real(exponent), literal and runtime, integer/real/complex
     @test n ^ 2 == NullNumber()
     @test n ^ 2.0 == NullNumber()
+    p = 2; @test n ^ p == NullNumber()
+    q = 2.0; @test n ^ q == NullNumber()
+    @test n ^ Inf == NullNumber()
+    @test n ^ (1 + 2im) == NullNumber()
+    @test n ^ (1 + Inf * im) == NullNumber()   # matches 0.0^(1+Inf*im) == 0.0+0.0im
+    @test n ^ (1 + NaN * im) == NullNumber()   # matches 0.0^(1+NaN*im) == 0.0+0.0im
 
-    @test (2 :: Int) ^ n == one(Int)
-    @test (2.0 :: Float64) ^ n == one(Float64)
-    @test (1 + 2im) ^ n == one(Complex{Int}) || (1 + 2im) ^ n == one(ComplexF64)
+    # real(x) <= 0 (or NaN) is not handled (avoids type instability) and always throws,
+    # matching 0.0^x == NaN whenever real(x) <= 0
+    @test_throws DomainError n ^ 0
+    @test_throws DomainError n ^ NaN
+    @test_throws DomainError n ^ (-1.5)
+    @test_throws DomainError n ^ (0 + 2im)
+    @test_throws DomainError n ^ (-1 + 2im)
+    @test_throws DomainError n ^ (NaN + 1im)
+    r = -1; @test_throws DomainError n ^ r
+
+    # Negative *integer literal* exponents are a documented exception: Julia lowers
+    # `n^(-1)` to `inv(n)^1` via `literal_pow` before our `^` method ever runs, so it
+    # throws DivideError (from `inv`) instead of the DomainError a runtime exponent
+    # of the same value would throw. This is intentional (see README "Semantics").
+    @test_throws DivideError n ^ (-1)
+    @test_throws DivideError n ^ (-2)
+
+    @test (2 :: Int) ^ n === one(Int)
+    @test (2.0 :: Float64) ^ n === one(Float64)
+    @test (1 + 2im) ^ n === one(Complex{Int})
 end
 
 @testset "muladd" begin
@@ -116,6 +140,23 @@ end
     @test n <= n
     @test n >= n
     @test !(n > n)
+    @test isless(n, n) === false
+
+    # mixed NullNumber / Real comparisons
+    @test n < 5
+    @test !(n < -5)
+    @test -5 < n
+    @test !(5 < n)
+    @test n <= 0
+    @test 0 <= n
+    @test n >= 0
+    @test 5 > n
+    @test !(n > 5)
+    @test isless(n, 5)
+    @test isless(-5, n)
+    @test !isless(n, -5)
+
+    @test sort(Any[n, 5, -3]) == [-3, n, 5]
 end
 
 @testset "imagz" begin
