@@ -67,5 +67,5 @@ The only exception is when `x = NullNumber()`, for which it throws `DomainError`
 ## Installation
 
 ```julia
-]add https://github.com/clguillot/NullNumbers
+]add NullNumbers
 ```
