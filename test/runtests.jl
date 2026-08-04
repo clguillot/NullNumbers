@@ -76,12 +76,11 @@ end
     @test_throws DomainError n ^ (NaN + 1im)
     r = -1; @test_throws DomainError n ^ r
 
-    # Negative *integer literal* exponents are a documented exception: Julia lowers
-    # `n^(-1)` to `inv(n)^1` via `literal_pow` before our `^` method ever runs, so it
-    # throws DivideError (from `inv`) instead of the DomainError a runtime exponent
-    # of the same value would throw. This is intentional (see README "Semantics").
-    @test_throws DivideError n ^ (-1)
-    @test_throws DivideError n ^ (-2)
+    # Negative integer literal exponents (e.g. `n^-1`) are normally routed by Julia
+    # through `literal_pow`, which calls `inv(x)` before `^` is reached. We override
+    # `literal_pow` so these throw the same DomainError as runtime exponents.
+    @test_throws DomainError n ^ (-1)
+    @test_throws DomainError n ^ (-2)
 
     @test (2 :: Int) ^ n === one(Int)
     @test (2.0 :: Float64) ^ n === one(Float64)
