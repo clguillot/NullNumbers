@@ -148,6 +148,7 @@ end
     @test !(5 < n)
     @test n <= 0
     @test 0 <= n
+    @test 0 >= n
     @test n >= 0
     @test 5 > n
     @test !(n > 5)
