@@ -55,12 +55,14 @@ follow IEEE float semantics in a few places:
 
 - `NullNumber() * NaN` and `NullNumber() * Inf` both evaluate to
   `NullNumber()`, not `NaN`.
-- `NullNumber() / x` returns `NullNumber()`, even when `x = 0 or NaN`
+- `NullNumber() / NaN` and `NullNumber() / 0` both evaluate to
+  `NullNumber()`, not `NaN`.
 - `x / NullNumber()` throws a `DivideError`
-- `NullNumber()^x` returns `NullNumber()` when `real(x) > 0`, and throws a
-`DomainError` otherwise (`real(x) <= 0`, or `real(x)` is `NaN`).
-- `x^NullNumber()` always returns `one(x)` for any `x`, following
+- `NullNumber()^x` evaluates to `NullNumber()` when `real(x) > 0`, and throws a
+`DomainError` otherwise (including `real(x) = NaN`)
+- `x^NullNumber()` evaluates `one(x)` for any `x`, following
 the usual `x^0 == 1` convention (including `Inf^0 == 1` and `NaN^0 == 1`).
+The only exception is when `x = NullNumber()`, for which it throws `DomainError`
 
 ## Installation
 
